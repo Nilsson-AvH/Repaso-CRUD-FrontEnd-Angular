@@ -1,4 +1,4 @@
-<form class="form form-category" [formGroup]="formData">
+<form class="form form-category" [formGroup]="formData" (ngSubmit)="onSubmit()">
     <h1>Register Category</h1>
     <div class="field">
         <label for="category-name">Name Category</label>
