@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-category-new',
@@ -18,8 +18,21 @@ export class CategoryNew {
     // Se usa para agrupar los campos que llevará el formulario
     this.formData = new FormGroup({
       // Instanciando un objeto de la clase FormControl (Para crear un campo)
-      name: new FormControl(''),
-      description: new FormControl(''),
+      name: new FormControl(
+        '',
+        [
+          Validators.required,
+          Validators.minLength(3)
+        ]
+      ),
+      description: new FormControl(
+        '',
+        [
+          Validators.required,
+          Validators.minLength(15),
+          Validators.maxLength(140)
+        ]
+      ),
     })
   }
 
