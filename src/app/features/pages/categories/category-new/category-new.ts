@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { HttpCategory } from '../../../../core/services/http-category';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-category-new',
@@ -13,7 +15,10 @@ export class CategoryNew {
   // Forma Imperativa
   formData!: FormGroup; // Tipado que me sugiere angular para los formularios reactivos
 
-  constructor() {
+  // Controlar cuando se suscribe y se desuscribe a un observable
+  registerSubscribed!: Subscription;
+
+  constructor(private httpCategory: HttpCategory) {
     // Instanciando un objeto de la clase FormGroup (Para crear em el formulario)
     // Se usa para agrupar los campos que llevará el formulario
     this.formData = new FormGroup({
@@ -45,10 +50,33 @@ export class CategoryNew {
 
       // Muestra los datos de los campos del formulario
       console.log(this.formData.value)
+
+      this.registerSubscribed = this.httpCategory.createCategory(this.formData.value).subscribe({
+        next: (data) => {
+          console.log(data)
+          this.formData.reset();
+        },
+        error: (error) => {
+          console.error(error)
+        },
+        complete: () => {
+          //Toca todos los campos y activa o despliega los mensajes de error
+          this.formData.markAsTouched();
+        },
+      })
     }
     else {
       // Muestre todos los mensajes de error en la vista de cada uno de los campor
       console.error('Formulario invalido');
+    }
+  }
+
+  ngOnDestroy() {
+
+    // Validar que el observable no este suscrito
+    if (this.registerSubscribed) {
+      console.info('Componente destruido');
+      this.registerSubscribed.unsubscribe(); //Desuscribirse manualmente
     }
   }
 }
