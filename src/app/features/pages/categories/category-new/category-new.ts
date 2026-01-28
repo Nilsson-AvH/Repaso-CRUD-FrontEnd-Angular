@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { HttpCategory } from '../../../../core/services/http-category';
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
+
+import { HttpCategory } from '../../../../core/services/http-category';
 
 @Component({
   selector: 'app-category-new',
@@ -18,7 +20,10 @@ export class CategoryNew {
   // Controlar cuando se suscribe y se desuscribe a un observable
   registerSubscribed!: Subscription;
 
-  constructor(private httpCategory: HttpCategory) {
+  constructor(
+    private httpCategory: HttpCategory,
+    private router: Router
+  ) {
     // Instanciando un objeto de la clase FormGroup (Para crear em el formulario)
     // Se usa para agrupar los campos que llevará el formulario
     this.formData = new FormGroup({
@@ -41,6 +46,15 @@ export class CategoryNew {
     })
   }
 
+  // Getters para acceder a los campos del formulario
+  get theName() {
+    return this.formData.get('name')
+  }
+
+  get theDescription() {
+    return this.formData.get('description')
+  }
+
   // Metodo con el cual vamos a capturar los datos del formulario al presionar el boton submit
   onSubmit() {
     // Verificar si el formulario es valido
@@ -55,6 +69,8 @@ export class CategoryNew {
         next: (data) => {
           console.log(data)
           this.formData.reset();
+          // Redirigir al listado de categorías
+          this.router.navigateByUrl('/dashboard/categories');
         },
         error: (error) => {
           console.error(error)
