@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { HttpCategory } from '../../../../core/services/http-category';
 import { AsyncPipe } from '@angular/common';
 import { Observable } from 'rxjs';
+import id from '@angular/common/locales/id';
 
 @Component({
   selector: 'app-category-list',
@@ -20,19 +21,28 @@ export class CategoryList {
   // Usamos el Hook del ciclo de vida del componente
   ngOnInit() {
     this.categories$ = this.httpCategory.getCategories();
+
+
+    // Usamos el Hook del Ciclo de vida que avisa que se esta inicializando el componente
+    // ngOnInit() {
+    //   this.categories$ = this.httpCategory.getCategories()
+    // IMPORTANTE: Si la estructura de datos que Ud esta trayendo del Backend tiene varias propiedades, asegurece de extraer solo los datos que necesita
+    // .pipe(
+    //   map( data => {
+    //     return data.data;
+    //   }),
+    //   catchError( err => {
+    //     return of([])
+    //   })
+    // );
   }
 
-  // Usamos el Hook del Ciclo de vida que avisa que se esta inicializando el componente
-  // ngOnInit() {
-  //   this.categories$ = this.httpCategory.getCategories()
-  // IMPORTANTE: Si la estructura de datos que Ud esta trayendo del Backend tiene varias propiedades, asegurece de extraer solo los datos que necesita
-  // .pipe(
-  //   map( data => {
-  //     return data.data;
-  //   }),
-  //   catchError( err => {
-  //     return of([])
-  //   })
-  // );
-}
+  onDelete(id: string) {
+    console.info(`Elimina la categoria: ${id}`);
+  }
 
+  onEdit(id: string) {
+    console.info(`Edita la categoria: ${id}`);
+  }
+
+}
