@@ -39,6 +39,14 @@ export class CategoryList {
 
   onDelete(id: string) {
     console.info(`Elimina la categoria: ${id}`);
+    this.httpCategory.deleteCategoryById(id).subscribe({
+      next: (data) => {
+        console.info(data);
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    })
   }
 
   onEdit(id: string) {
