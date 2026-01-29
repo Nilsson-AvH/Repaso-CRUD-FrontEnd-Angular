@@ -3,10 +3,11 @@ import { HttpCategory } from '../../../../core/services/http-category';
 import { AsyncPipe } from '@angular/common';
 import { BehaviorSubject, Observable, switchMap } from 'rxjs';
 import id from '@angular/common/locales/id';
+import { Router, RouterLink } from "@angular/router";
 
 @Component({
   selector: 'app-category-list',
-  imports: [AsyncPipe],
+  imports: [AsyncPipe, RouterLink],
   templateUrl: './category-list.html',
   styleUrl: './category-list.css',
   changeDetection: ChangeDetectionStrategy.OnPush // mi app usa single change detection pero se puede cambiar a Default
@@ -22,7 +23,9 @@ export class CategoryList {
 
   public categoryToEdit: any = null;
 
-  constructor(private httpCategory: HttpCategory) { }
+  constructor(
+    private httpCategory: HttpCategory,
+    private router: Router) { }
 
   // Usamos el Hook del ciclo de vida del componente
   ngOnInit() {
@@ -62,6 +65,10 @@ export class CategoryList {
 
   onEdit(id: string) {
     console.info(`Edita la categoria: ${id}`);
+    // this.router.navigateByUrl('/dashboard/category/edit/' + id);
+    // this.router.navigateByUrl(`/dashboard/category/edit/${id}`);
+    // this.router.navigate(['/dashboard/category/edit/', id]);
+    this.router.navigate(['/dashboard', 'category', 'edit', id]);
   }
 
 }

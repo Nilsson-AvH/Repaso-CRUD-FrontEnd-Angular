@@ -5,6 +5,7 @@ import { Register } from './features/pages/register/register';
 import { Error404 } from './features/pages/error-404/error-404';
 import { CategoryNew } from './features/pages/categories/category-new/category-new';
 import { CategoryList } from './features/pages/categories/category-list/category-list';
+import { CategoryEdit } from './features/pages/categories/category-edit/category-edit';
 
 export const routes: Routes = [
     // No olvidar que las rutas deben estar ordenadas de menor a mayor especificidad
@@ -15,6 +16,7 @@ export const routes: Routes = [
     // Rutas de categorías
     { path: 'dashboard/categories', component: CategoryList },
     { path: 'dashboard/category/new', component: CategoryNew },
+    { path: 'dashboard/category/edit/:id', component: CategoryEdit },
     // Las redirecciones deben estar al final
     { path: '', redirectTo: 'home', pathMatch: 'full' },
     { path: '**', redirectTo: 'error-404', pathMatch: 'full' },
