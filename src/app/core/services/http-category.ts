@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, Observable, of, tap } from 'rxjs';
 
 // El servicio del frontend se habla con el backend por medio de la url base
 
@@ -21,7 +21,11 @@ export class HttpCategory {
     return this.http.post(`${this.base_url}/${this.slug}`, newCategory);
   }
   getCategories(): Observable<any> {
-    return this.http.get(`${this.base_url}/${this.slug}`);
+    return this.http.get(`${this.base_url}/${this.slug}`)
+      .pipe(
+        tap(data => console.info(data)),
+        catchError(err => of([])),
+      );
   }
   // Verificar que estructura de datos me trae el backend
   // getCategories().pipe

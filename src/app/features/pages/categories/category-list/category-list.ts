@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { HttpCategory } from '../../../../core/services/http-category';
 import { AsyncPipe } from '@angular/common';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, switchMap } from 'rxjs';
 import id from '@angular/common/locales/id';
 
 @Component({
@@ -13,14 +13,23 @@ import id from '@angular/common/locales/id';
 })
 export class CategoryList {
   // Definir el atributo que contendra la estructura de las categorias
-  // categories: any[] = []; // Signals
   public categories$: Observable<any[]> = new Observable<any[]>();
+  // categories: any[] = []; // Signals
+
+  // Creamos un atributo para almacenar la categoria que se va a editar
+  private refreshTrigger$ = new BehaviorSubject<void>(undefined);
+  // Trigger sirve para forzar la actualizacion de la vista
+
+  public categoryToEdit: any = null;
 
   constructor(private httpCategory: HttpCategory) { }
 
   // Usamos el Hook del ciclo de vida del componente
   ngOnInit() {
-    this.categories$ = this.httpCategory.getCategories();
+    // Se usa el trigger para forzar la actualizacion de la vista
+    this.categories$ = this.refreshTrigger$.pipe(
+      switchMap(() => this.httpCategory.getCategories())
+    );
 
 
     // Usamos el Hook del Ciclo de vida que avisa que se esta inicializando el componente
@@ -42,6 +51,8 @@ export class CategoryList {
     this.httpCategory.deleteCategoryById(id).subscribe({
       next: (data) => {
         console.info(data);
+        // Se usa el trigger para forzar la actualizacion de la vista
+        this.refreshTrigger$.next();
       },
       error: (err) => {
         console.error(err);
