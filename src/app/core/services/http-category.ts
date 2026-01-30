@@ -20,6 +20,11 @@ export class HttpCategory {
   createCategory(newCategory: any): Observable<any> {
     return this.http.post(`${this.base_url}/${this.slug}`, newCategory);
   }
+
+  getCategoryById(id: String) {
+    return this.http.get(`${this.base_url}/${this.slug}/${id}`);
+  }
+
   getCategories(): Observable<any> {
     return this.http.get(`${this.base_url}/${this.slug}`)
       .pipe(
