@@ -21,8 +21,8 @@ export class HttpCategory {
     return this.http.post(`${this.base_url}/${this.slug}`, newCategory);
   }
 
-  getCategoryById(id: String) {
-    return this.http.get(`${this.base_url}/${this.slug}/${id}`);
+  getCategoryById(id: String): Observable<any> {
+    return this.http.get<any>(`${this.base_url}/${this.slug}/${id}`);
   }
 
   getCategories(): Observable<any> {
@@ -37,5 +37,9 @@ export class HttpCategory {
   // }
   deleteCategoryById(id: string): Observable<any> {
     return this.http.delete(`${this.base_url}/${this.slug}/${id}`);
+  }
+
+  updateCategoryById(id: string | null, updatedCategory: any): Observable<any> {
+    return this.http.patch<any>(`${this.base_url}/${this.slug}/${id}`, updatedCategory);
   }
 }

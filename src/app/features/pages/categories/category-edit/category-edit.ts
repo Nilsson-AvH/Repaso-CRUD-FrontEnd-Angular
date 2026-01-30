@@ -58,6 +58,8 @@ export class CategoryEdit {
     return this.formData.get('description')
   }
 
+  //TODO: Refactorizar el ngOnInit
+  //Porque un metodo / funcion solo debe realizar una tarea
   ngOnInit() {
     // Paso 1: Obtener el id de la categoria
     this.categoryId = this.activatedRoute.snapshot.paramMap.get('id');
@@ -69,6 +71,12 @@ export class CategoryEdit {
       this.httpCategory.getCategoryById(this.categoryId).subscribe({
         next: (data) => {
           console.log(data);
+
+          // Paso 3: Actualizar los campos del formulario con los datos de la categoria
+          this.formData.patchValue({
+            name: data.name,
+            description: data.description
+          });
         },
         error: (err) => {
           console.error(err);
@@ -83,6 +91,24 @@ export class CategoryEdit {
 
   onSubmit() {
     console.log(this.formData.value);
+    if (this.formData.valid) {
+      this.httpCategory.updateCategoryById(this.categoryId, this.formData.value).subscribe({
+        next: (data) => {
+          console.log(data);
+          this.formData.reset(); // Limpia el formulario
+          this.router.navigateByUrl('/dashboard/categories'); // Redirige a la lista de categorias
+        },
+        error: (err) => {
+          console.error(err);
+        },
+        complete: () => {
+          this.formData.markAsTouched(); // Despliega los errores del formulario
+        }
+      })
+    }
+    else {
+      console.error('Formulario invalido');
+    }
   }
 
 }
