@@ -1,1 +1,75 @@
-<p>category-edit works!</p>
+<form class="form form-category" [formGroup]="formData" (ngSubmit)="onSubmit()">
+    <h1>Edit Category</h1>
+    <div class="field">
+        <label for="category-name">Name Category</label>
+        <input type="text" formControlName="name" id="category-name" class="name-category"
+            placeholder="Ej: Pasta al ajillo">
+        <div class="error-container">
+            <!--
+                validacion de los estados del campo name
+                @if (this.formData.get('name')?.invalid && ( El campo name es invalido
+                this.formData.get('name')?.dirty || El campo name esta sucio
+                this.formData.get('name')?.touched)) { El campo name ha sido tocado
+            -->
+            @if (theName?.invalid && (
+            theName?.dirty ||
+            theName?.touched)) {
+
+            <!--
+                Validacion de los errores del campo name del formulario
+            -->
+            @if (theName?.errors?.['required']) {
+            <small>
+                El campo name es requerido
+            </small>
+            }
+
+            @if (theName?.errors?.['minlength']) {
+            <small>
+                El campo name debe tener al menos 3 caracteres
+            </small>
+            }
+
+            }
+        </div>
+    </div>
+    <div class="field">
+        <label for="category-description">Description</label>
+        <textarea formControlName="description" id="category-description" placeholder="Brief description"></textarea>
+        <div class="error-container">
+            <!--
+                Validacion de los estados del campo description
+            -->
+            @if (theDescription?.invalid && (
+            theDescription?.dirty ||
+            theDescription?.touched)) {
+
+            <!--
+                Validacion de los errores del campo description del formulario
+            -->
+            @if (theDescription?.errors?.['required']) {
+            <small>
+                El campo description es requerido
+            </small>
+            }
+
+            @if (theDescription?.errors?.['minlength']) {
+            <small>
+                El campo description debe tener al menos 15 caracteres
+            </small>
+            }
+
+            @if (theDescription?.errors?.['maxlength']) {
+            <small>
+                El campo description debe tener menos de 140 caracteres
+            </small>
+            }
+            s
+            }
+        </div>
+    </div>
+    <div class="field buttons">
+        <button class="btn btn-register" type="submit" [disabled]="this.formData.invalid">Edit</button>
+        <button class="btn btn-reset" type="reset">Reset</button>
+    </div>
+</form>
