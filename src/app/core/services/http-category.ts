@@ -1,6 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, of, tap } from 'rxjs';
+// Category no es mas que un tipo de dato que define la estructura de un objeto que yo mismo me invente
+// para que el frontend sepa que estructura de datos va a recibir del backend
+// y no me de errores de que no existe una propiedad
+// La palabra type es para decirle a typescript que voy a usar un tipo de dato
+// Type solo me indica, no hace nada
+import { type Category } from '../interfaces/Category'; // Importamos la interface Category
 
 // El servicio del frontend se habla con el backend por medio de la url base
 
@@ -17,16 +23,16 @@ export class HttpCategory {
   // Aca basicamente se definen los metodos que se van a usar para hacer peticiones HTTP
   // Como se harian en el postman
 
-  createCategory(newCategory: any): Observable<any> {
-    return this.http.post(`${this.base_url}/${this.slug}`, newCategory);
+  createCategory(newCategory: Category): Observable<Category> {
+    return this.http.post<Category>(`${this.base_url}/${this.slug}`, newCategory);
   }
 
-  getCategoryById(id: String): Observable<any> {
-    return this.http.get<any>(`${this.base_url}/${this.slug}/${id}`);
+  getCategoryById(id: String): Observable<Category> {
+    return this.http.get<Category>(`${this.base_url}/${this.slug}/${id}`);
   }
 
-  getCategories(): Observable<any> {
-    return this.http.get(`${this.base_url}/${this.slug}`)
+  getCategories(): Observable<Category[]> {
+    return this.http.get<Category[]>(`${this.base_url}/${this.slug}`)
       .pipe(
         tap(data => console.info(data)),
         catchError(err => of([])),
@@ -39,7 +45,7 @@ export class HttpCategory {
     return this.http.delete(`${this.base_url}/${this.slug}/${id}`);
   }
 
-  updateCategoryById(id: string | null, updatedCategory: any): Observable<any> {
-    return this.http.patch<any>(`${this.base_url}/${this.slug}/${id}`, updatedCategory);
+  updateCategoryById(id: string | null, updatedCategory: Category): Observable<Category> {
+    return this.http.patch<Category>(`${this.base_url}/${this.slug}/${id}`, updatedCategory);
   }
 }
