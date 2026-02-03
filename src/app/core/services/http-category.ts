@@ -7,6 +7,7 @@ import { catchError, Observable, of, tap } from 'rxjs';
 // La palabra type es para decirle a typescript que voy a usar un tipo de dato
 // Type solo me indica, no hace nada
 import { type Category } from '../interfaces/Category'; // Importamos la interface Category
+import { environment } from '../../../environments/environment';
 
 // El servicio del frontend se habla con el backend por medio de la url base
 
@@ -14,7 +15,7 @@ import { type Category } from '../interfaces/Category'; // Importamos la interfa
   providedIn: 'root',
 })
 export class HttpCategory {
-  private base_url: string = 'http://localhost:3000/api';
+  private base_url: string = environment.apiUrl;
   private slug: string = 'categories';
   // const http = inject(HttpClient); // Inyección de dependencia en una funcion
   // Se inyecta como dependencia la clase que permite hacer peticiones HTTP
